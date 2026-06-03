@@ -2,10 +2,19 @@
   "name": "capacitor-plugin-nostr-signer",
   "version": "0.2.0",
   "description": "A capacitor plugin that uses the intents package to interact with nostr signer apps on the Android platform",
-  "main": "dist/plugin.cjs.js",
+  "type": "module",
+  "main": "dist/esm/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
   "unpkg": "dist/plugin.js",
+  "exports": {
+    ".": {
+      "types": "./dist/esm/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/plugin.cjs"
+    },
+    "./package.json": "./package.json"
+  },
   "files": [
     "android/src/main/",
     "android/build.gradle",
@@ -47,7 +56,7 @@
     "watch": "tsc --watch",
     "prepare": "npm run build",
     "prepublishOnly": "npm run build",
-    "test:ts": "jest",
+    "test:ts": "jest --config jest.config.cjs",
     "test:android": "cd android && ./gradlew clean testDebugUnitTest --no-daemon --stacktrace --info --console=plain",
     "test:all": "npm run test:ts && npm run test:android",
     "test": "npm run test:all",
