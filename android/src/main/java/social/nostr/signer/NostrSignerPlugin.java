@@ -139,13 +139,13 @@ public class NostrSignerPlugin extends Plugin {
 		}
 		String eventJson = call.getString("eventJson");
 		String eventId = call.getString("eventId");
-		String npub = call.getString("npub");
-		if (eventJson == null || eventId == null || npub == null) {
+		String pubkey = call.getString("pubkey");
+		if (eventJson == null || eventId == null || pubkey == null) {
 			call.reject("Missing parameters");
 			return;
 		}
 
-		String[] signedEvent = implementation.signEvent(getContext(), packageName, eventJson, npub);
+		String[] signedEvent = implementation.signEvent(getContext(), packageName, eventJson, pubkey);
 		if (signedEvent != null) {
 			if (NostrSigner.REJECTED.equals(signedEvent[0])) {
 				call.reject("Rejected by signer", "REJECTED", (JSObject) null);
@@ -161,7 +161,7 @@ public class NostrSignerPlugin extends Plugin {
 			intent.setPackage(packageName);
 			intent.putExtra("type", "sign_event");
 			intent.putExtra("id", eventId);
-			intent.putExtra("current_user", npub);
+			intent.putExtra("current_user", pubkey);
 			startActivityForResult(call, intent, "signEventActivity");
 		}
 	}
@@ -193,14 +193,14 @@ public class NostrSignerPlugin extends Plugin {
 		}
 		String plainText = call.getString("plainText");
 		String pubKey = call.getString("pubKey");
-		String npub = call.getString("npub");
+		String pubkey = call.getString("pubkey");
 		String id = call.getString("id");
-		if (plainText == null || pubKey == null || npub == null) {
+		if (plainText == null || pubKey == null || pubkey == null) {
 			call.reject("Missing parameters");
 			return;
 		}
 
-		String encryptedText = implementation.nip04Encrypt(getContext(), packageName, plainText, pubKey, npub);
+		String encryptedText = implementation.nip04Encrypt(getContext(), packageName, plainText, pubKey, pubkey);
 		if (encryptedText != null) {
 			if (NostrSigner.REJECTED.equals(encryptedText)) {
 				call.reject("Rejected by signer", "REJECTED", (JSObject) null);
@@ -215,7 +215,7 @@ public class NostrSignerPlugin extends Plugin {
 			intent.setPackage(packageName);
 			intent.putExtra("type", "nip04_encrypt");
 			intent.putExtra("id", id);
-			intent.putExtra("current_user", npub);
+			intent.putExtra("current_user", pubkey);
 			intent.putExtra("pubkey", pubKey);
 			startActivityForResult(call, intent, "genericResultActivity");
 		}
@@ -230,14 +230,14 @@ public class NostrSignerPlugin extends Plugin {
 		}
 		String plainText = call.getString("plainText");
 		String pubKey = call.getString("pubKey");
-		String npub = call.getString("npub");
+		String pubkey = call.getString("pubkey");
 		String id = call.getString("id");
-		if (plainText == null || pubKey == null || npub == null) {
+		if (plainText == null || pubKey == null || pubkey == null) {
 			call.reject("Missing parameters");
 			return;
 		}
 
-		String encryptedText = implementation.nip44Encrypt(getContext(), packageName, plainText, pubKey, npub);
+		String encryptedText = implementation.nip44Encrypt(getContext(), packageName, plainText, pubKey, pubkey);
 		if (encryptedText != null) {
 			if (NostrSigner.REJECTED.equals(encryptedText)) {
 				call.reject("Rejected by signer", "REJECTED", (JSObject) null);
@@ -252,7 +252,7 @@ public class NostrSignerPlugin extends Plugin {
 			intent.setPackage(packageName);
 			intent.putExtra("type", "nip44_encrypt");
 			intent.putExtra("id", id);
-			intent.putExtra("current_user", npub);
+			intent.putExtra("current_user", pubkey);
 			intent.putExtra("pubkey", pubKey);
 			startActivityForResult(call, intent, "genericResultActivity");
 		}
@@ -267,14 +267,14 @@ public class NostrSignerPlugin extends Plugin {
 		}
 		String encryptedText = call.getString("encryptedText");
 		String pubKey = call.getString("pubKey");
-		String npub = call.getString("npub");
+		String pubkey = call.getString("pubkey");
 		String id = call.getString("id");
-		if (encryptedText == null || pubKey == null || npub == null) {
+		if (encryptedText == null || pubKey == null || pubkey == null) {
 			call.reject("Missing parameters");
 			return;
 		}
 
-		String decryptedText = implementation.nip04Decrypt(getContext(), packageName, encryptedText, pubKey, npub);
+		String decryptedText = implementation.nip04Decrypt(getContext(), packageName, encryptedText, pubKey, pubkey);
 		if (decryptedText != null) {
 			if (NostrSigner.REJECTED.equals(decryptedText)) {
 				call.reject("Rejected by signer", "REJECTED", (JSObject) null);
@@ -289,7 +289,7 @@ public class NostrSignerPlugin extends Plugin {
 			intent.setPackage(packageName);
 			intent.putExtra("type", "nip04_decrypt");
 			intent.putExtra("id", id);
-			intent.putExtra("current_user", npub);
+			intent.putExtra("current_user", pubkey);
 			intent.putExtra("pubkey", pubKey);
 			startActivityForResult(call, intent, "genericResultActivity");
 		}
@@ -304,14 +304,14 @@ public class NostrSignerPlugin extends Plugin {
 		}
 		String encryptedText = call.getString("encryptedText");
 		String pubKey = call.getString("pubKey");
-		String npub = call.getString("npub");
+		String pubkey = call.getString("pubkey");
 		String id = call.getString("id");
-		if (encryptedText == null || pubKey == null || npub == null) {
+		if (encryptedText == null || pubKey == null || pubkey == null) {
 			call.reject("Missing parameters");
 			return;
 		}
 
-		String decryptedText = implementation.nip44Decrypt(getContext(), packageName, encryptedText, pubKey, npub);
+		String decryptedText = implementation.nip44Decrypt(getContext(), packageName, encryptedText, pubKey, pubkey);
 		if (decryptedText != null) {
 			if (NostrSigner.REJECTED.equals(decryptedText)) {
 				call.reject("Rejected by signer", "REJECTED", (JSObject) null);
@@ -326,7 +326,7 @@ public class NostrSignerPlugin extends Plugin {
 			intent.setPackage(packageName);
 			intent.putExtra("type", "nip44_decrypt");
 			intent.putExtra("id", id);
-			intent.putExtra("current_user", npub);
+			intent.putExtra("current_user", pubkey);
 			intent.putExtra("pubkey", pubKey);
 			startActivityForResult(call, intent, "genericResultActivity");
 		}
@@ -340,14 +340,14 @@ public class NostrSignerPlugin extends Plugin {
 			return;
 		}
 		String eventJson = call.getString("eventJson");
-		String npub = call.getString("npub");
+		String pubkey = call.getString("pubkey");
 		String id = call.getString("id");
-		if (eventJson == null || npub == null) {
+		if (eventJson == null || pubkey == null) {
 			call.reject("Missing parameters");
 			return;
 		}
 
-		String decryptedEventJson = implementation.decryptZapEvent(getContext(), packageName, eventJson, npub);
+		String decryptedEventJson = implementation.decryptZapEvent(getContext(), packageName, eventJson, pubkey);
 		if (decryptedEventJson != null) {
 			if (NostrSigner.REJECTED.equals(decryptedEventJson)) {
 				call.reject("Rejected by signer", "REJECTED", (JSObject) null);
@@ -362,7 +362,42 @@ public class NostrSignerPlugin extends Plugin {
 			intent.setPackage(packageName);
 			intent.putExtra("type", "decrypt_zap_event");
 			intent.putExtra("id", id);
-			intent.putExtra("current_user", npub);
+			intent.putExtra("current_user", pubkey);
+			startActivityForResult(call, intent, "genericResultActivity");
+		}
+	}
+
+	@PluginMethod
+	public void signPsbt(PluginCall call) {
+		String packageName = getPackageName(call);
+		if (packageName == null || packageName.isEmpty()) {
+			call.reject("Signer package name not set. Call setPackageName first.");
+			return;
+		}
+		String psbtHex = call.getString("psbtHex");
+		String pubkey = call.getString("pubkey");
+		String id = call.getString("id");
+		if (psbtHex == null || pubkey == null) {
+			call.reject("Missing parameters");
+			return;
+		}
+
+		String signedPsbtHex = implementation.signPsbt(getContext(), packageName, psbtHex, pubkey);
+		if (signedPsbtHex != null) {
+			if (NostrSigner.REJECTED.equals(signedPsbtHex)) {
+				call.reject("Rejected by signer", "REJECTED", (JSObject) null);
+				return;
+			}
+			JSObject ret = new JSObject();
+			ret.put("result", signedPsbtHex);
+			ret.put("id", id);
+			call.resolve(ret);
+		} else {
+			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("nostrsigner:" + psbtHex));
+			intent.setPackage(packageName);
+			intent.putExtra("type", "sign_psbt");
+			intent.putExtra("id", id);
+			intent.putExtra("current_user", pubkey);
 			startActivityForResult(call, intent, "genericResultActivity");
 		}
 	}

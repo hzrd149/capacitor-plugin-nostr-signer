@@ -21,6 +21,7 @@ jest.mock('@capacitor/core', () => {
       nip44Encrypt: jest.fn(async () => ({ result: 'enc44', id: '1' })),
       nip44Decrypt: jest.fn(async () => ({ result: 'dec44', id: '1' })),
       decryptZapEvent: jest.fn(async () => ({ result: '{"ok":true}', id: '1' })),
+      signPsbt: jest.fn(async () => ({ result: 'signedpsbthex', id: '1' })),
     })),
   };
 });
@@ -39,8 +40,23 @@ describe('TS bridge', () => {
   });
 
   it('signEvent passes through result', async () => {
-    const res = await NostrSignerPlugin.signEvent('com.signer', '{"k":1}', '1', 'npub');
+    const res = await NostrSignerPlugin.signEvent(
+      'com.signer',
+      '{"k":1}',
+      '1',
+      '3bf0c63fcb93463407af97a5e5ee64fa883d107ef9e558472c4eb9aaaefa459d',
+    );
     expect(res).toEqual({ signature: 'sig', id: '1', event: '{"k":1}' });
+  });
+
+  it('signPsbt passes through result', async () => {
+    const res = await NostrSignerPlugin.signPsbt(
+      'com.signer',
+      '70736274ff',
+      '1',
+      '3bf0c63fcb93463407af97a5e5ee64fa883d107ef9e558472c4eb9aaaefa459d',
+    );
+    expect(res).toEqual({ result: 'signedpsbthex', id: '1' });
   });
 
   it('Android-only guard rejects on non-android', async () => {

@@ -12,6 +12,7 @@ export type PermissionType =
   | 'nip44_decrypt'
   | 'decrypt_zap_event'
   | 'sign_event'
+  | 'sign_psbt'
   | 'nip';
 
 export interface Permission {
@@ -35,14 +36,14 @@ export interface NostrSignerNative {
     packageName?: string;
     eventJson: string;
     eventId: string;
-    npub: string;
+    pubkey: string;
   }): Promise<{ signature: string; id: string; event: string }>;
 
   nip04Encrypt(options: {
     packageName?: string;
     plainText: string;
     pubKey: string;
-    npub: string;
+    pubkey: string;
     id?: string;
   }): Promise<{ result: string; id: string }>;
 
@@ -50,7 +51,7 @@ export interface NostrSignerNative {
     packageName?: string;
     encryptedText: string;
     pubKey: string;
-    npub: string;
+    pubkey: string;
     id?: string;
   }): Promise<{ result: string; id: string }>;
 
@@ -58,7 +59,7 @@ export interface NostrSignerNative {
     packageName?: string;
     plainText: string;
     pubKey: string;
-    npub: string;
+    pubkey: string;
     id?: string;
   }): Promise<{ result: string; id: string }>;
 
@@ -66,14 +67,21 @@ export interface NostrSignerNative {
     packageName?: string;
     encryptedText: string;
     pubKey: string;
-    npub: string;
+    pubkey: string;
     id?: string;
   }): Promise<{ result: string; id: string }>;
 
   decryptZapEvent(options: {
     packageName?: string;
     eventJson: string;
-    npub: string;
+    pubkey: string;
+    id?: string;
+  }): Promise<{ result: string; id: string }>;
+
+  signPsbt(options: {
+    packageName?: string;
+    psbtHex: string;
+    pubkey: string;
     id?: string;
   }): Promise<{ result: string; id: string }>;
 }

@@ -87,7 +87,7 @@ public class NostrSigner {
 	}
 
 	/**
-	 * Returns the npub string, {@link #REJECTED} if the provider explicitly rejected,
+	 * Returns the hex pubkey, {@link #REJECTED} if the provider explicitly rejected,
 	 * or null if the provider is unavailable (trigger intent fallback).
 	 */
 	public String getPublicKey(Context context, String packageName) {
@@ -100,9 +100,9 @@ public class NostrSigner {
 	 * Returns [signature, eventJson], {@link #REJECTED} (as first element) if rejected,
 	 * or null if unavailable.
 	 */
-	public String[] signEvent(Context context, String packageName, String eventJson, String loggedInUserNpub) {
+	public String[] signEvent(Context context, String packageName, String eventJson, String loggedInUserPubkey) {
 		Uri uri = Uri.parse("content://" + packageName + ".SIGN_EVENT");
-		String[] projection = new String[] { eventJson, "", loggedInUserNpub };
+		String[] projection = new String[] { eventJson, "", loggedInUserPubkey };
 		ContentResolver contentResolver = context.getContentResolver();
 		Cursor cursor = null;
 		try {
@@ -122,29 +122,34 @@ public class NostrSigner {
 		}
 	}
 
-	public String nip04Encrypt(Context context, String packageName, String plainText, String recipientPubKey, String loggedInUserNpub) {
+	public String nip04Encrypt(Context context, String packageName, String plainText, String recipientPubKey, String loggedInUserPubkey) {
 		Uri uri = Uri.parse("content://" + packageName + ".NIP04_ENCRYPT");
-		return querySingleResult(context, uri, new String[]{ plainText, recipientPubKey, loggedInUserNpub });
+		return querySingleResult(context, uri, new String[]{ plainText, recipientPubKey, loggedInUserPubkey });
 	}
 
-	public String nip04Decrypt(Context context, String packageName, String encryptedText, String senderPubKey, String loggedInUserNpub) {
+	public String nip04Decrypt(Context context, String packageName, String encryptedText, String senderPubKey, String loggedInUserPubkey) {
 		Uri uri = Uri.parse("content://" + packageName + ".NIP04_DECRYPT");
-		return querySingleResult(context, uri, new String[]{ encryptedText, senderPubKey, loggedInUserNpub });
+		return querySingleResult(context, uri, new String[]{ encryptedText, senderPubKey, loggedInUserPubkey });
 	}
 
-	public String nip44Encrypt(Context context, String packageName, String plainText, String recipientPubKey, String loggedInUserNpub) {
+	public String nip44Encrypt(Context context, String packageName, String plainText, String recipientPubKey, String loggedInUserPubkey) {
 		Uri uri = Uri.parse("content://" + packageName + ".NIP44_ENCRYPT");
-		return querySingleResult(context, uri, new String[]{ plainText, recipientPubKey, loggedInUserNpub });
+		return querySingleResult(context, uri, new String[]{ plainText, recipientPubKey, loggedInUserPubkey });
 	}
 
-	public String nip44Decrypt(Context context, String packageName, String encryptedText, String senderPubKey, String loggedInUserNpub) {
+	public String nip44Decrypt(Context context, String packageName, String encryptedText, String senderPubKey, String loggedInUserPubkey) {
 		Uri uri = Uri.parse("content://" + packageName + ".NIP44_DECRYPT");
-		return querySingleResult(context, uri, new String[]{ encryptedText, senderPubKey, loggedInUserNpub });
+		return querySingleResult(context, uri, new String[]{ encryptedText, senderPubKey, loggedInUserPubkey });
 	}
 
-	public String decryptZapEvent(Context context, String packageName, String eventJson, String loggedInUserNpub) {
+	public String decryptZapEvent(Context context, String packageName, String eventJson, String loggedInUserPubkey) {
 		Uri uri = Uri.parse("content://" + packageName + ".DECRYPT_ZAP_EVENT");
-		return querySingleResult(context, uri, new String[]{ eventJson, "", loggedInUserNpub });
+		return querySingleResult(context, uri, new String[]{ eventJson, "", loggedInUserPubkey });
+	}
+
+	public String signPsbt(Context context, String packageName, String psbtHex, String loggedInUserPubkey) {
+		Uri uri = Uri.parse("content://" + packageName + ".SIGN_PSBT");
+		return querySingleResult(context, uri, new String[]{ psbtHex, "", loggedInUserPubkey });
 	}
 
 	// -------------------------------------------------------------------------

@@ -105,12 +105,11 @@ The AppInfo object has the following fields"
 
 ```typescript
 export interface AppInfo {
-  name: string;        // The name of the app as it appears in the System launcher
+  name: string; // The name of the app as it appears in the System launcher
   packageName: string; // The package name of the app - pass this to setPackageName
-  iconData: string;    // the base 64 encoded string of the app's icon
-  iconUrl: string;    // the url to app's icon
+  iconData: string; // the base 64 encoded string of the app's icon
+  iconUrl: string; // the url to app's icon
 }
-
 ```
 
 ### Get Public Key
@@ -135,9 +134,12 @@ const event = {
 };
 
 try {
-  const { event: signedEventJson } = await NostrSignerPlugin.signEvent({
-    eventJson: JSON.stringify(event),
-  });
+  const { event: signedEventJson } = await NostrSignerPlugin.signEvent(
+    'com.example.signer',
+    JSON.stringify(event),
+    'request-id',
+    pubkey,
+  );
   const signedEvent = JSON.parse(signedEventJson);
   console.log('Signed Event:', signedEvent);
 } catch (error) {
@@ -145,14 +147,35 @@ try {
 }
 ```
 
+### Sign PSBT
+
+`pubkey` must be the current user's lowercase hex public key, such as the value returned by `getPublicKey()`. It is not an `npub`.
+
+```typescript
+try {
+  const { result: signedPsbtHex } = await NostrSignerPlugin.signPsbt(
+    'com.example.signer',
+    psbtHex,
+    'request-id',
+    pubkey,
+  );
+  console.log('Signed PSBT:', signedPsbtHex);
+} catch (error) {
+  console.error('Error signing PSBT:', error);
+}
+```
+
 ### NIP-04 Encrypt
 
 ```typescript
 try {
-  const { result: encryptedText } = await NostrSignerPlugin.nip04Encrypt({
-    pubKey: 'recipient_public_key',
-    plainText: 'Secret message',
-  });
+  const { result: encryptedText } = await NostrSignerPlugin.nip04Encrypt(
+    'com.example.signer',
+    'Secret message',
+    'request-id',
+    'recipient_public_key',
+    pubkey,
+  );
   console.log('Encrypted Text:', encryptedText);
 } catch (error) {
   console.error('Error encrypting message:', error);
@@ -163,10 +186,13 @@ try {
 
 ```typescript
 try {
-  const { result: decryptedText } = await NostrSignerPlugin.nip04Decrypt({
-    pubKey: 'sender_public_key',
-    encryptedText: 'encrypted_text',
-  });
+  const { result: decryptedText } = await NostrSignerPlugin.nip04Decrypt(
+    'com.example.signer',
+    'encrypted_text',
+    'request-id',
+    'sender_public_key',
+    pubkey,
+  );
   console.log('Decrypted Text:', decryptedText);
 } catch (error) {
   console.error('Error decrypting message:', error);
@@ -177,10 +203,13 @@ try {
 
 ```typescript
 try {
-  const { result: encryptedText } = await NostrSignerPlugin.nip44Encrypt({
-    pubKey: 'recipient_public_key',
-    plainText: 'Secret message',
-  });
+  const { result: encryptedText } = await NostrSignerPlugin.nip44Encrypt(
+    'com.example.signer',
+    'Secret message',
+    'request-id',
+    'recipient_public_key',
+    pubkey,
+  );
   console.log('Encrypted Text (NIP-44):', encryptedText);
 } catch (error) {
   console.error('Error encrypting message (NIP-44):', error);
@@ -191,10 +220,13 @@ try {
 
 ```typescript
 try {
-  const { result: decryptedText } = await NostrSignerPlugin.nip44Decrypt({
-    pubKey: 'sender_public_key',
-    encryptedText: 'encrypted_text',
-  });
+  const { result: decryptedText } = await NostrSignerPlugin.nip44Decrypt(
+    'com.example.signer',
+    'encrypted_text',
+    'request-id',
+    'sender_public_key',
+    pubkey,
+  );
   console.log('Decrypted Text (NIP-44):', decryptedText);
 } catch (error) {
   console.error('Error decrypting message (NIP-44):', error);
@@ -205,9 +237,12 @@ try {
 
 ```typescript
 try {
-  const { result: decryptedEventJson } = await NostrSignerPlugin.decryptZapEvent({
-    eventJson: JSON.stringify(encryptedEvent),
-  });
+  const { result: decryptedEventJson } = await NostrSignerPlugin.decryptZapEvent(
+    'com.example.signer',
+    JSON.stringify(encryptedEvent),
+    'request-id',
+    pubkey,
+  );
   const decryptedEvent = JSON.parse(decryptedEventJson);
   console.log('Decrypted Zap Event:', decryptedEvent);
 } catch (error) {
@@ -219,21 +254,21 @@ try {
 
 <docgen-index>
 
-* [`getInstalledSignerApps(...)`](#getinstalledsignerapps)
-* [`setPackageName(...)`](#setpackagename)
-* [`isExternalSignerInstalled()`](#isexternalsignerinstalled)
-* [`getPublicKey()`](#getpublickey)
-* [`signEvent(...)`](#signevent)
-* [`nip04Encrypt(...)`](#nip04encrypt)
-* [`nip04Decrypt(...)`](#nip04decrypt)
-* [`nip44Encrypt(...)`](#nip44encrypt)
-* [`nip44Decrypt(...)`](#nip44decrypt)
-* [`decryptZapEvent(...)`](#decryptzapevent)
+- [`getInstalledSignerApps(...)`](#getinstalledsignerapps)
+- [`setPackageName(...)`](#setpackagename)
+- [`isExternalSignerInstalled()`](#isexternalsignerinstalled)
+- [`getPublicKey()`](#getpublickey)
+- [`signEvent(...)`](#signevent)
+- [`signPsbt(...)`](#signpsbt)
+- [`nip04Encrypt(...)`](#nip04encrypt)
+- [`nip04Decrypt(...)`](#nip04decrypt)
+- [`nip44Encrypt(...)`](#nip44encrypt)
+- [`nip44Decrypt(...)`](#nip44decrypt)
+- [`decryptZapEvent(...)`](#decryptzapevent)
 
 </docgen-index>
 
 <docgen-api>
-
 
 ### getInstalledSignerApps(...)
 
@@ -245,7 +280,6 @@ Returns a list of AppInfo objects which contain information about which Signer a
 
 **Returns:** <code>Promise&lt;{ apps: AppInfop[] }&gt;</code>
 
-
 ### setPackageName(...)
 
 ```typescript
@@ -254,11 +288,11 @@ setPackageName(options: { packageName: string; }) => Promise<void>
 
 Sets the package name of the external Nostr signer app. This is required on Android to specify which app to interact with.
 
-| Param         | Type                                 | Description                                   |
-| ------------- | ------------------------------------ | --------------------------------------------- |
+| Param         | Type                                  | Description                                   |
+| ------------- | ------------------------------------- | --------------------------------------------- |
 | **`options`** | <code>{ packageName: string; }</code> | An object containing the package name string. |
 
---------------------
+---
 
 ### isExternalSignerInstalled()
 
@@ -272,7 +306,7 @@ Checks if the external Nostr signer app is installed on the device.
 
 An object indicating whether the signer app is installed.
 
---------------------
+---
 
 ### getPublicKey()
 
@@ -287,115 +321,158 @@ Requests the public key from the Nostr signer app or extension.
 An object containing the public key in lowercase hex format and the signer's
 Android package name.
 
---------------------
+---
 
 ### signEvent(...)
 
 ```typescript
-signEvent(options: { eventJson: string; }) => Promise<{ event: string; }>
+signEvent(packageName: string, eventJson: string, id: string, pubkey: string) => Promise<{ signature: string; id: string; event: string }>
 ```
 
 Requests the signer app to sign a Nostr event.
 
-| Param         | Type                                | Description                       |
-| ------------- | ----------------------------------- | --------------------------------- |
-| **`options`** | <code>{ eventJson: string; }</code> | An object containing the event in JSON string format. |
+| Param             | Type                | Description                                      |
+| ----------------- | ------------------- | ------------------------------------------------ |
+| **`packageName`** | <code>string</code> | The signer Android package name.                 |
+| **`eventJson`**   | <code>string</code> | The unsigned event in JSON string format.        |
+| **`id`**          | <code>string</code> | Caller-provided request id returned in response. |
+| **`pubkey`**      | <code>string</code> | Current user's lowercase hex public key.         |
 
-**Returns:** <code>Promise&lt;{ event: string; }&gt;</code>
+**Returns:** <code>Promise&lt;{ signature: string; id: string; event: string }&gt;</code>
 
-An object containing the signed event in JSON string format.
+An object containing the event signature, request id, and signed event JSON.
 
---------------------
+---
+
+### signPsbt(...)
+
+```typescript
+signPsbt(packageName: string, psbtHex: string, id: string, pubkey: string) => Promise<{ result: string; id: string }>
+```
+
+Requests the signer app to sign a Bitcoin PSBT using Amber's `sign_psbt` NIP-55 extension.
+
+| Param             | Type                | Description                                      |
+| ----------------- | ------------------- | ------------------------------------------------ |
+| **`packageName`** | <code>string</code> | The signer Android package name.                 |
+| **`psbtHex`**     | <code>string</code> | The unsigned PSBT encoded as hex.                |
+| **`id`**          | <code>string</code> | Caller-provided request id returned in response. |
+| **`pubkey`**      | <code>string</code> | Current user's lowercase hex public key.         |
+
+**Returns:** <code>Promise&lt;{ result: string; id: string }&gt;</code>
+
+An object containing the signed PSBT hex in `result`.
+
+---
 
 ### nip04Encrypt(...)
 
 ```typescript
-nip04Encrypt(options: { plainText: string; pubKey: string; }) => Promise<{ result: string; }>
+nip04Encrypt(packageName: string, plainText: string, id: string, pubKey: string, pubkey: string) => Promise<{ result: string; id: string }>
 ```
 
 Encrypts a message using NIP-04 encryption.
 
-| Param         | Type                                                  | Description                                 |
-| ------------- | ----------------------------------------------------- | ------------------------------------------- |
-| **`options`** | <code>{ plainText: string; pubKey: string; }</code>   | An object containing the plaintext and the recipient's public key. |
+| Param             | Type                | Description                                      |
+| ----------------- | ------------------- | ------------------------------------------------ |
+| **`packageName`** | <code>string</code> | The signer Android package name.                 |
+| **`plainText`**   | <code>string</code> | The plaintext to encrypt.                        |
+| **`id`**          | <code>string</code> | Caller-provided request id returned in response. |
+| **`pubKey`**      | <code>string</code> | Recipient's lowercase hex public key.            |
+| **`pubkey`**      | <code>string</code> | Current user's lowercase hex public key.         |
 
-**Returns:** <code>Promise&lt;{ result: string; }&gt;</code>
+**Returns:** <code>Promise&lt;{ result: string; id: string }&gt;</code>
 
 An object containing the encrypted text.
 
---------------------
+---
 
 ### nip04Decrypt(...)
 
 ```typescript
-nip04Decrypt(options: { encryptedText: string; pubKey: string; }) => Promise<{ result: string; }>
+nip04Decrypt(packageName: string, encryptedText: string, id: string, pubKey: string, pubkey: string) => Promise<{ result: string; id: string }>
 ```
 
 Decrypts a message using NIP-04 decryption.
 
-| Param         | Type                                                    | Description                                 |
-| ------------- | ------------------------------------------------------- | ------------------------------------------- |
-| **`options`** | <code>{ encryptedText: string; pubKey: string; }</code> | An object containing the encrypted text and the sender's public key. |
+| Param               | Type                | Description                                      |
+| ------------------- | ------------------- | ------------------------------------------------ |
+| **`packageName`**   | <code>string</code> | The signer Android package name.                 |
+| **`encryptedText`** | <code>string</code> | The encrypted text to decrypt.                   |
+| **`id`**            | <code>string</code> | Caller-provided request id returned in response. |
+| **`pubKey`**        | <code>string</code> | Sender's lowercase hex public key.               |
+| **`pubkey`**        | <code>string</code> | Current user's lowercase hex public key.         |
 
-**Returns:** <code>Promise&lt;{ result: string; }&gt;</code>
+**Returns:** <code>Promise&lt;{ result: string; id: string }&gt;</code>
 
 An object containing the decrypted plaintext.
 
---------------------
+---
 
 ### nip44Encrypt(...)
 
 ```typescript
-nip44Encrypt(options: { plainText: string; pubKey: string; }) => Promise<{ result: string; }>
+nip44Encrypt(packageName: string, plainText: string, id: string, pubKey: string, pubkey: string) => Promise<{ result: string; id: string }>
 ```
 
 Encrypts a message using NIP-44 encryption.
 
-| Param         | Type                                                  | Description                                 |
-| ------------- | ----------------------------------------------------- | ------------------------------------------- |
-| **`options`** | <code>{ plainText: string; pubKey: string; }</code>   | An object containing the plaintext and the recipient's public key. |
+| Param             | Type                | Description                                      |
+| ----------------- | ------------------- | ------------------------------------------------ |
+| **`packageName`** | <code>string</code> | The signer Android package name.                 |
+| **`plainText`**   | <code>string</code> | The plaintext to encrypt.                        |
+| **`id`**          | <code>string</code> | Caller-provided request id returned in response. |
+| **`pubKey`**      | <code>string</code> | Recipient's lowercase hex public key.            |
+| **`pubkey`**      | <code>string</code> | Current user's lowercase hex public key.         |
 
-**Returns:** <code>Promise&lt;{ result: string; }&gt;</code>
+**Returns:** <code>Promise&lt;{ result: string; id: string }&gt;</code>
 
 An object containing the encrypted text.
 
---------------------
+---
 
 ### nip44Decrypt(...)
 
 ```typescript
-nip44Decrypt(options: { encryptedText: string; pubKey: string; }) => Promise<{ result: string; }>
+nip44Decrypt(packageName: string, encryptedText: string, id: string, pubKey: string, pubkey: string) => Promise<{ result: string; id: string }>
 ```
 
 Decrypts a message using NIP-44 decryption.
 
-| Param         | Type                                                    | Description                                 |
-| ------------- | ------------------------------------------------------- | ------------------------------------------- |
-| **`options`** | <code>{ encryptedText: string; pubKey: string; }</code> | An object containing the encrypted text and the sender's public key. |
+| Param               | Type                | Description                                      |
+| ------------------- | ------------------- | ------------------------------------------------ |
+| **`packageName`**   | <code>string</code> | The signer Android package name.                 |
+| **`encryptedText`** | <code>string</code> | The encrypted text to decrypt.                   |
+| **`id`**            | <code>string</code> | Caller-provided request id returned in response. |
+| **`pubKey`**        | <code>string</code> | Sender's lowercase hex public key.               |
+| **`pubkey`**        | <code>string</code> | Current user's lowercase hex public key.         |
 
-**Returns:** <code>Promise&lt;{ result: string; }&gt;</code>
+**Returns:** <code>Promise&lt;{ result: string; id: string }&gt;</code>
 
 An object containing the decrypted plaintext.
 
---------------------
+---
 
 ### decryptZapEvent(...)
 
 ```typescript
-decryptZapEvent(options: { eventJson: string; }) => Promise<{ result: string; }>
+decryptZapEvent(packageName: string, eventJson: string, id: string, pubkey: string) => Promise<{ result: string; id: string }>
 ```
 
 Decrypts a zap event.
 
-| Param         | Type                                | Description                       |
-| ------------- | ----------------------------------- | --------------------------------- |
-| **`options`** | <code>{ eventJson: string; }</code> | An object containing the encrypted zap event in JSON string format. |
+| Param             | Type                | Description                                      |
+| ----------------- | ------------------- | ------------------------------------------------ |
+| **`packageName`** | <code>string</code> | The signer Android package name.                 |
+| **`eventJson`**   | <code>string</code> | The encrypted zap event in JSON string format.   |
+| **`id`**          | <code>string</code> | Caller-provided request id returned in response. |
+| **`pubkey`**      | <code>string</code> | Current user's lowercase hex public key.         |
 
-**Returns:** <code>Promise&lt;{ result: string; }&gt;</code>
+**Returns:** <code>Promise&lt;{ result: string; id: string }&gt;</code>
 
 An object containing the decrypted zap event in JSON string format.
 
---------------------
+---
 
 </docgen-api>
 

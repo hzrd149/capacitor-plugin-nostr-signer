@@ -27,6 +27,10 @@ public class TestCursorProvider extends ContentProvider {
             String event = projection != null && projection.length > 0 ? projection[0] : "{}";
             c.addRow(new Object[]{"signaturehex", event});
             return c;
+        } else if (authority.endsWith("SIGN_PSBT")) {
+            c = new MatrixCursor(new String[]{"signature", "event", "result"});
+            c.addRow(new Object[]{"signedpsbthex", "signedpsbthex", "signedpsbthex"});
+            return c;
         } else if (authority.endsWith("NIP04_ENCRYPT") || authority.endsWith("NIP44_ENCRYPT")) {
             c = new MatrixCursor(new String[]{"result"});
             c.addRow(new Object[]{"encrypted"});

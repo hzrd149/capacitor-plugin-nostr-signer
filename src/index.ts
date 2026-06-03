@@ -52,13 +52,13 @@ export const NostrSignerPlugin = {
     packageName: string,
     eventJson: string,
     id: string,
-    npub: string,
+    pubkey: string,
   ): Promise<{ signature: string; id: string; event: string }> {
     ensureAndroid();
-    if (!eventJson || !id || !npub) {
-      throw new Error('MISSING_PARAMS: eventJson,id,npub');
+    if (!eventJson || !id || !pubkey) {
+      throw new Error('MISSING_PARAMS: eventJson,id,pubkey');
     }
-    return native.signEvent({ packageName, eventJson, eventId: id, npub });
+    return native.signEvent({ packageName, eventJson, eventId: id, pubkey });
   },
 
   async nip04Encrypt(
@@ -66,13 +66,13 @@ export const NostrSignerPlugin = {
     plainText: string,
     id: string,
     pubKey: string,
-    npub: string,
+    pubkey: string,
   ): Promise<{ result: string; id: string }> {
     ensureAndroid();
-    if (!plainText || !pubKey || !npub) {
-      throw new Error('MISSING_PARAMS: plainText,pubKey,npub');
+    if (!plainText || !pubKey || !pubkey) {
+      throw new Error('MISSING_PARAMS: plainText,pubKey,pubkey');
     }
-    return native.nip04Encrypt({ packageName, plainText, pubKey, npub, id });
+    return native.nip04Encrypt({ packageName, plainText, pubKey, pubkey, id });
   },
 
   async nip04Decrypt(
@@ -80,13 +80,13 @@ export const NostrSignerPlugin = {
     encryptedText: string,
     id: string,
     pubKey: string,
-    npub: string,
+    pubkey: string,
   ): Promise<{ result: string; id: string }> {
     ensureAndroid();
-    if (!encryptedText || !pubKey || !npub) {
-      throw new Error('MISSING_PARAMS: encryptedText,pubKey,npub');
+    if (!encryptedText || !pubKey || !pubkey) {
+      throw new Error('MISSING_PARAMS: encryptedText,pubKey,pubkey');
     }
-    return native.nip04Decrypt({ packageName, encryptedText, pubKey, npub, id });
+    return native.nip04Decrypt({ packageName, encryptedText, pubKey, pubkey, id });
   },
 
   async nip44Encrypt(
@@ -94,13 +94,13 @@ export const NostrSignerPlugin = {
     plainText: string,
     id: string,
     pubKey: string,
-    npub: string,
+    pubkey: string,
   ): Promise<{ result: string; id: string }> {
     ensureAndroid();
-    if (!plainText || !pubKey || !npub) {
-      throw new Error('MISSING_PARAMS: plainText,pubKey,npub');
+    if (!plainText || !pubKey || !pubkey) {
+      throw new Error('MISSING_PARAMS: plainText,pubKey,pubkey');
     }
-    return native.nip44Encrypt({ packageName, plainText, pubKey, npub, id });
+    return native.nip44Encrypt({ packageName, plainText, pubKey, pubkey, id });
   },
 
   async nip44Decrypt(
@@ -108,26 +108,39 @@ export const NostrSignerPlugin = {
     encryptedText: string,
     id: string,
     pubKey: string,
-    npub: string,
+    pubkey: string,
   ): Promise<{ result: string; id: string }> {
     ensureAndroid();
-    if (!encryptedText || !pubKey || !npub) {
-      throw new Error('MISSING_PARAMS: encryptedText,pubKey,npub');
+    if (!encryptedText || !pubKey || !pubkey) {
+      throw new Error('MISSING_PARAMS: encryptedText,pubKey,pubkey');
     }
-    return native.nip44Decrypt({ packageName, encryptedText, pubKey, npub, id });
+    return native.nip44Decrypt({ packageName, encryptedText, pubKey, pubkey, id });
   },
 
   async decryptZapEvent(
     packageName: string,
     eventJson: string,
     id: string,
-    npub: string,
+    pubkey: string,
   ): Promise<{ result: string; id: string }> {
     ensureAndroid();
-    if (!eventJson || !npub) {
-      throw new Error('MISSING_PARAMS: eventJson,npub');
+    if (!eventJson || !pubkey) {
+      throw new Error('MISSING_PARAMS: eventJson,pubkey');
     }
-    return native.decryptZapEvent({ packageName, eventJson, npub, id });
+    return native.decryptZapEvent({ packageName, eventJson, pubkey, id });
+  },
+
+  async signPsbt(
+    packageName: string,
+    psbtHex: string,
+    id: string,
+    pubkey: string,
+  ): Promise<{ result: string; id: string }> {
+    ensureAndroid();
+    if (!psbtHex || !pubkey) {
+      throw new Error('MISSING_PARAMS: psbtHex,pubkey');
+    }
+    return native.signPsbt({ packageName, psbtHex, pubkey, id });
   },
 };
 
