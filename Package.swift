@@ -2,11 +2,11 @@
 import PackageDescription
 
 let package = Package(
-    name: "NostrSignerCapacitorPlugin",
+    name: "CapacitorPluginNostrSigner",
     platforms: [.iOS(.v15)],
     products: [
         .library(
-            name: "NostrSignerCapacitorPlugin",
+            name: "CapacitorPluginNostrSigner",
             targets: ["NostrSignerPlugin"])
     ],
     dependencies: [

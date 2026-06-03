@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 ## [0.2.0] - 2026-06-03
 
 ### Changed
+- **Breaking:** Renamed the npm package from `nostr-signer-capacitor-plugin` to
+  `capacitor-plugin-nostr-signer`. Update your install/import accordingly. The iOS
+  CocoaPods/SPM artifact is renamed from `NostrSignerCapacitorPlugin` to
+  `CapacitorPluginNostrSigner` to match.
 - **Breaking:** `getPublicKey()` now resolves to `{ pubkey: string; package: string }`
   instead of `{ npub: string }`. The returned `pubkey` is a lowercase hex public
   key — the value was already hex (decoded via `npubToHex`), so the previous `npub`

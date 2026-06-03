@@ -5,7 +5,7 @@ This Capacitor plugin allows your application to interact with Nostr signer apps
 ## Install
 
 ```bash
-npm install nostr-signer-capacitor-plugin
+npm install capacitor-plugin-nostr-signer
 npx cap sync
 ```
 
@@ -69,7 +69,7 @@ npm test
 ### Import the Plugin
 
 ```typescript
-import NostrSignerPlugin from 'nostr-signer-capacitor-plugin';
+import NostrSignerPlugin from 'capacitor-plugin-nostr-signer';
 ```
 
 ### Set the Signer Package Name

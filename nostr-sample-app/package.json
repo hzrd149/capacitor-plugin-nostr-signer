@@ -17,7 +17,7 @@
     "@capacitor/android": "^8.1.0",
     "@capacitor/cli": "^8.1.0",
     "@capacitor/core": "^8.1.0",
-    "nostr-signer-capacitor-plugin": "file:../../nostr-signer-capacitor-plugin",
+    "capacitor-plugin-nostr-signer": "file:../../nostr-signer-capacitor-plugin",
     "nostr-tools": "^2.7.2",
     "svelte-routing": "^2.13.0"
   }

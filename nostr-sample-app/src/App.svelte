@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { NostrSignerPlugin, type AppInfo } from 'nostr-signer-capacitor-plugin';
+  import { NostrSignerPlugin, type AppInfo } from 'capacitor-plugin-nostr-signer';
   import { Capacitor } from '@capacitor/core';
   import { onMount } from 'svelte';
   import { getEventHash, type UnsignedEvent } from 'nostr-tools';

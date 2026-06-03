@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>nostr-signer-capacitor-plugin</name>
-	<comment>Project android-nostr-signer-capacitor-plugin created by Buildship.</comment>
+	<name>capacitor-plugin-nostr-signer</name>
+	<comment>Project android-capacitor-plugin-nostr-signer created by Buildship.</comment>
 	<projects>
 	</projects>
 	<buildSpec>

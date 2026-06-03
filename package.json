@@ -1,5 +1,5 @@
 {
-  "name": "nostr-signer-capacitor-plugin",
+  "name": "capacitor-plugin-nostr-signer",
   "version": "0.2.0",
   "description": "A capacitor plugin that uses the intents package to interact with nostr signer apps on the Android platform",
   "main": "dist/plugin.cjs.js",
@@ -13,16 +13,16 @@
     "ios/Sources",
     "ios/Tests",
     "Package.swift",
-    "NostrSignerCapacitorPlugin.podspec"
+    "CapacitorPluginNostrSigner.podspec"
   ],
   "author": "hzrd149 <github@hzrd149.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hzrd149/nostr-signer-capacitor-plugin.git"
+    "url": "git+https://github.com/hzrd149/capacitor-plugin-nostr-signer.git"
   },
   "bugs": {
-    "url": "https://github.com/hzrd149/nostr-signer-capacitor-plugin/issues"
+    "url": "https://github.com/hzrd149/capacitor-plugin-nostr-signer/issues"
   },
   "keywords": [
     "capacitor",
@@ -33,7 +33,7 @@
   ],
   "scripts": {
     "verify": "npm run verify:ios && npm run verify:android && npm run verify:web",
-    "verify:ios": "xcodebuild -scheme NostrSignerCapacitorPlugin -destination generic/platform=iOS",
+    "verify:ios": "xcodebuild -scheme CapacitorPluginNostrSigner -destination generic/platform=iOS",
     "verify:android": "cd android && ./gradlew clean build test && cd ..",
     "verify:web": "npm run build",
     "lint": "npm run eslint && npm run prettier -- --check && npm run swiftlint -- lint",
