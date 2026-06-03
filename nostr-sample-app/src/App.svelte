@@ -71,8 +71,8 @@
       ) {
         publicKey = await window.nostr.getPublicKey();
       } else {
-        const { npub } = await NostrSignerPlugin.getPublicKey();
-        publicKey = npub;
+        const { pubkey } = await NostrSignerPlugin.getPublicKey();
+        publicKey = pubkey;
       }
     } catch (error) {
       console.error('Error getting public key:', error);
@@ -82,7 +82,8 @@
   // Function to sign an event
   async function signEvent() {
     try {
-      let { data } = nip19.decode(publicKey);
+      // publicKey is a lowercase hex pubkey (NIP-07 and the signer both return hex)
+      const data = publicKey;
       const event = {
         kind: 1,
         created_at: Math.round(Date.now() / 1000),

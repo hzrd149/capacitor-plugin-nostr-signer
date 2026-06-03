@@ -91,7 +91,7 @@ public class NostrSignerPlugin extends Plugin {
 			}
 			if (result != null) {
 				JSObject ret = new JSObject();
-				ret.put("npub", result);
+				ret.put("pubkey", result);
 				ret.put("package", packageName);
 				call.resolve(ret);
 				return;
@@ -122,10 +122,10 @@ public class NostrSignerPlugin extends Plugin {
 			call.reject("No data returned", "INTENT_FAILED", (JSObject) null);
 			return;
 		}
-		String npub = NostrSigner.npubToHex(data.getStringExtra("result"));
+		String pubkey = NostrSigner.npubToHex(data.getStringExtra("result"));
 		String packageName = data.getStringExtra("package");
 		JSObject ret = new JSObject();
-		ret.put("npub", npub);
+		ret.put("pubkey", pubkey);
 		ret.put("package", packageName);
 		call.resolve(ret);
 	}

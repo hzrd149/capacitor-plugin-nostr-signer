@@ -14,7 +14,7 @@ jest.mock('@capacitor/core', () => {
       getInstalledSignerApps: jest.fn(async () => ({
         apps: [{ name: 'Signer', packageName: 'com.signer', iconUrl: 'data:image/png;base64,x' }],
       })),
-      getPublicKey: jest.fn(async () => ({ npub: 'npub1...', package: 'com.signer' })),
+      getPublicKey: jest.fn(async () => ({ pubkey: '3bf0c63f...459d', package: 'com.signer' })),
       signEvent: jest.fn(async () => ({ signature: 'sig', id: '1', event: '{"k":1}' })),
       nip04Encrypt: jest.fn(async () => ({ result: 'enc', id: '1' })),
       nip04Decrypt: jest.fn(async () => ({ result: 'dec', id: '1' })),
@@ -33,7 +33,7 @@ describe('TS bridge', () => {
 
   it('getPublicKey serializes permissions when array', async () => {
     await expect(NostrSignerPlugin.getPublicKey('com.signer', [{ type: 'get_public_key' }])).resolves.toEqual({
-      npub: 'npub1...',
+      pubkey: '3bf0c63f...459d',
       package: 'com.signer',
     });
   });

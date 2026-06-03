@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.0] - 2026-06-03
+
+### Changed
+- **Breaking:** `getPublicKey()` now resolves to `{ pubkey: string; package: string }`
+  instead of `{ npub: string }`. The returned `pubkey` is a lowercase hex public
+  key — the value was already hex (decoded via `npubToHex`), so the previous `npub`
+  field name was misleading. Update destructuring from `const { npub }` to
+  `const { pubkey }`. The signer's Android package name is now also returned.
+- Corrected the README `getPublicKey()` documentation, which previously claimed the
+  result was in npub format.
+- Bumped Android `versionName` to `0.2.0` and `versionCode` to `7`.
+
+### Fixed
+- Sample app: `signEvent` no longer calls `nip19.decode()` on the public key, which
+  always threw because the key is hex (from both NIP-07 and the signer); it now uses
+  the hex pubkey directly.
+
 ## [0.1.0] - 2026-05-14
 
 ### Changed

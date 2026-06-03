@@ -42,7 +42,7 @@ export const NostrSignerPlugin = {
   async getPublicKey(
     packageName?: string,
     permissions?: Permission[] | string,
-  ): Promise<{ npub: string; package: string }> {
+  ): Promise<{ pubkey: string; package: string }> {
     ensureAndroid();
     const perm = normalizePermissions(permissions);
     return native.getPublicKey({ packageName, permissions: perm });

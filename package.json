@@ -1,7 +1,7 @@
 {
   "name": "nostr-signer-capacitor-plugin",
-  "version": "0.1.0",
-  "description": "This capacitor plugin uses the intents package to interact with nostr signer apps on the Android platform",
+  "version": "0.2.0",
+  "description": "A capacitor plugin that uses the intents package to interact with nostr signer apps on the Android platform",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
@@ -15,14 +15,14 @@
     "Package.swift",
     "NostrSignerCapacitorPlugin.podspec"
   ],
-  "author": "biz <chebizarro@gmail.com>",
+  "author": "hzrd149 <github@hzrd149.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chebizarro/nostr-signer-capacitor-plugin.git"
+    "url": "git+https://github.com/hzrd149/nostr-signer-capacitor-plugin.git"
   },
   "bugs": {
-    "url": "https://github.com/chebizarro/nostr-signer-capacitor-plugin/issues"
+    "url": "https://github.com/hzrd149/nostr-signer-capacitor-plugin/issues"
   },
   "keywords": [
     "capacitor",

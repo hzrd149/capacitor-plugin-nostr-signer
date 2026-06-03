@@ -29,7 +29,7 @@ export interface NostrSignerNative {
   getPublicKey(options?: {
     packageName?: string;
     permissions?: string; // JSON string only on native
-  }): Promise<{ npub: string; package: string }>;
+  }): Promise<{ pubkey: string; package: string }>;
 
   signEvent(options: {
     packageName?: string;

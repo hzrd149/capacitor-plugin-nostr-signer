@@ -117,8 +117,8 @@ export interface AppInfo {
 
 ```typescript
 try {
-  const { npub } = await NostrSignerPlugin.getPublicKey();
-  console.log('Public Key:', npub);
+  const { pubkey } = await NostrSignerPlugin.getPublicKey();
+  console.log('Public Key (hex):', pubkey);
 } catch (error) {
   console.error('Error getting public key:', error);
 }
@@ -277,14 +277,15 @@ An object indicating whether the signer app is installed.
 ### getPublicKey()
 
 ```typescript
-getPublicKey() => Promise<{ npub: string; }>
+getPublicKey() => Promise<{ pubkey: string; package: string }>
 ```
 
 Requests the public key from the Nostr signer app or extension.
 
-**Returns:** <code>Promise&lt;{ npub: string; }&gt;</code>
+**Returns:** <code>Promise&lt;{ pubkey: string; package: string }&gt;</code>
 
-An object containing the public key in npub format.
+An object containing the public key in lowercase hex format and the signer's
+Android package name.
 
 --------------------
 
